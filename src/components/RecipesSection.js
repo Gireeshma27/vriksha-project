@@ -6,12 +6,6 @@ import { motion } from "framer-motion";
 import { recipes } from "../data/products";
 import { AnimateOnScroll } from "./AnimationUtils";
 
-const difficultyColor = {
-  Easy: "text-green-700 bg-green-100",
-  Medium: "text-amber-700 bg-amber-100",
-  Hard: "text-red-700 bg-red-100",
-};
-
 const tagColor = {
   Breakfast: "bg-amber-100 text-amber-700",
   Drink: "bg-sky-100 text-sky-700",
@@ -20,12 +14,12 @@ const tagColor = {
 };
 
 export default function RecipesSection() {
-  // Show first 6 on the home page
-  const displayed = recipes.slice(0, 6);
+  const featured = recipes[0];
+  const listRecipes = recipes.slice(1, 5); // 4 items in the side list
 
   return (
     <section id="recipes" className="py-20 bg-cream overflow-hidden relative">
-      {/* Subtle grain texture */}
+      {/* Subtle grain texture overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
@@ -34,29 +28,176 @@ export default function RecipesSection() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <AnimateOnScroll className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-earth-100 text-earth-700 text-sm font-semibold rounded-full mb-5 uppercase tracking-wider">
-              <Leaf className="w-3.5 h-3.5" />
-              Recipe Ideas
+
+        {/* ── Section Header ── */}
+        <AnimateOnScroll className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-earth-100 text-earth-700 text-sm font-semibold rounded-full mb-5 uppercase tracking-wider">
+            <Leaf className="w-3.5 h-3.5" />
+            Recipe Ideas
+          </div>
+          <h2
+            className="text-4xl sm:text-5xl font-bold text-forest-800 leading-tight"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Recipe Ideas
+          </h2>
+          <p className="text-forest-500 mt-3 max-w-xl mx-auto leading-relaxed">
+            Healthy and delicious recipes made with our organic ingredients.
+          </p>
+        </AnimateOnScroll>
+
+        {/* ── Magazine Layout: Featured + List ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 xl:gap-8">
+
+          {/* ── Left: Featured Recipe ── */}
+          <motion.div
+            className="group relative rounded-3xl overflow-hidden shadow-lg cursor-pointer"
+            style={{ minHeight: "480px" }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Full-bleed image with zoom on hover */}
+            <div className="absolute inset-0 overflow-hidden">
+              <motion.img
+                src={featured.image}
+                alt={featured.name}
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.06 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+              />
             </div>
-            <h2
-              className="text-4xl sm:text-5xl font-bold text-forest-800 leading-tight"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              Cook with{" "}
-              <span className="text-earth-500">Vriksha</span>
-            </h2>
-            <p className="text-forest-500 mt-3 max-w-lg leading-relaxed">
-              Transform our natural ingredients into delicious, nourishing meals.
-              Explore simple recipes inspired by traditional cooking.
+
+            {/* Gradient overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-forest-900/85 via-forest-900/30 to-transparent" />
+
+            {/* Tag pill — top left */}
+            <div className="absolute top-5 left-5">
+              <span
+                className={`px-3 py-1 text-xs font-bold rounded-full backdrop-blur-sm ${
+                  tagColor[featured.tag] ?? "bg-white/20 text-white"
+                }`}
+              >
+                {featured.tag}
+              </span>
+            </div>
+
+            {/* Content anchored to bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-7">
+              <div className="flex items-center gap-4 text-white/70 text-xs font-medium mb-3">
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5" />
+                  {featured.time}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5" />
+                  Serves {featured.servings}
+                </span>
+              </div>
+              <h3
+                className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-snug"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                {featured.name}
+              </h3>
+              <p className="text-white/75 text-sm leading-relaxed mb-5 line-clamp-2 max-w-md">
+                {featured.description}
+              </p>
+              <motion.div
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex"
+              >
+                <Link
+                  href="/recipes"
+                  className="inline-flex items-center gap-2 bg-white text-forest-700 font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-earth-50 transition-colors shadow-md"
+                >
+                  View Recipe
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* ── Right: Recipe List ── */}
+          <div className="flex flex-col gap-3">
+            {listRecipes.map((recipe, i) => (
+              <motion.div
+                key={recipe.id}
+                className="group flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm hover:shadow-md border border-green-100/60 hover:border-earth-200 cursor-pointer transition-all duration-300"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: i * 0.08,
+                  duration: 0.55,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={{ x: 4 }}
+              >
+                {/* Thumbnail */}
+                <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+                  <motion.img
+                    src={recipe.image}
+                    alt={recipe.name}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
+                  <div className="absolute inset-0 bg-forest-900/10 group-hover:bg-forest-900/0 transition-colors duration-300" />
+                </div>
+
+                {/* Text */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${
+                        tagColor[recipe.tag] ?? "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {recipe.tag}
+                    </span>
+                    <span className="flex items-center gap-1 text-forest-400 text-[11px]">
+                      <Clock className="w-3 h-3" />
+                      {recipe.time}
+                    </span>
+                  </div>
+                  <h4
+                    className="font-bold text-forest-800 text-sm leading-snug mb-1 group-hover:text-earth-600 transition-colors duration-200 line-clamp-1"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    {recipe.name}
+                  </h4>
+                  <p className="text-forest-400 text-xs leading-relaxed line-clamp-2">
+                    {recipe.description}
+                  </p>
+                </div>
+
+                {/* Arrow */}
+                <Link
+                  href="/recipes"
+                  aria-label={`View recipe: ${recipe.name}`}
+                  className="shrink-0 w-8 h-8 rounded-full bg-forest-50 flex items-center justify-center text-forest-500 group-hover:bg-forest-600 group-hover:text-white transition-all duration-300"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+            ))}
+
+            {/* Spacer card teasing more recipes */}
+            <p className="text-center text-forest-400 text-xs mt-1 mb-1">
+              +{recipes.length - listRecipes.length - 1} more recipes waiting for you
             </p>
           </div>
-          <motion.div whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
+        </div>
+
+        {/* ── View All Recipes CTA ── */}
+        <AnimateOnScroll className="mt-10 text-center">
+          <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
               href="/recipes"
-              className="inline-flex items-center gap-2 text-earth-600 font-semibold hover:text-earth-800 transition-colors shrink-0 group"
+              className="inline-flex items-center gap-2 bg-forest-700 hover:bg-forest-800 text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-md shadow-forest-900/20 group"
             >
               View All Recipes
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -64,82 +205,6 @@ export default function RecipesSection() {
           </motion.div>
         </AnimateOnScroll>
 
-        {/* Responsive 3-column card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayed.map((recipe, i) => (
-            <motion.div
-              key={recipe.id}
-              className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-forest-900/10 border border-green-100/60 transition-shadow duration-500 cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: i * 0.09,
-                duration: 0.55,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              whileHover={{ y: -6 }}
-            >
-              {/* Card Image */}
-              <div className="relative h-52 overflow-hidden">
-                <motion.img
-                  src={recipe.image}
-                  alt={recipe.name}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.07 }}
-                  transition={{ duration: 0.65, ease: "easeOut" }}
-                />
-                {/* Category + difficulty pills */}
-                <div className="absolute top-4 left-4 flex items-center gap-2">
-                  <span
-                    className={`px-3 py-1 text-xs font-bold rounded-full ${
-                      tagColor[recipe.tag] ?? "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {recipe.tag}
-                  </span>
-                  <span
-                    className={`px-3 py-1 text-xs font-bold rounded-full ${
-                      difficultyColor[recipe.difficulty] ?? difficultyColor.Easy
-                    }`}
-                  >
-                    {recipe.difficulty}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6">
-                <h3
-                  className="font-bold text-forest-800 text-xl mb-2.5 leading-snug group-hover:text-forest-600 transition-colors duration-300"
-                  style={{ fontFamily: "var(--font-playfair)" }}
-                >
-                  {recipe.name}
-                </h3>
-                <p className="text-forest-500 text-sm leading-relaxed mb-5 line-clamp-2">
-                  {recipe.description}
-                </p>
-
-                {/* Meta row */}
-                <div className="flex items-center justify-between pt-4 border-t border-green-100">
-                  <div className="flex items-center gap-4 text-forest-400 text-xs font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5" />
-                      {recipe.time}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Users className="w-3.5 h-3.5" />
-                      Serves {recipe.servings}
-                    </span>
-                  </div>
-                  <span className="w-9 h-9 rounded-full bg-forest-50 flex items-center justify-center text-forest-600 group-hover:bg-forest-600 group-hover:text-white transition-all duration-300">
-                    <ChevronRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );
