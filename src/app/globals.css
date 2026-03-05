@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfaf5;
+  --foreground: #1a2e1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Nature Green Palette */
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+
+  /* Forest Deep Green */
+  --color-forest-50: #f0f7f0;
+  --color-forest-100: #d6ead6;
+  --color-forest-200: #aed4ae;
+  --color-forest-300: #7ab87a;
+  --color-forest-400: #52b788;
+  --color-forest-500: #40916c;
+  --color-forest-600: #2d6a4f;
+  --color-forest-700: #1b4332;
+  --color-forest-800: #0f2d1e;
+  --color-forest-900: #071a11;
+
+  /* Earth brown tones */
+  --color-earth-50: #fdf8f0;
+  --color-earth-100: #faebd7;
+  --color-earth-200: #f2d5b0;
+  --color-earth-300: #e8b97a;
+  --color-earth-400: #d4924a;
+  --color-earth-500: #b5722a;
+  --color-earth-600: #8b5e2b;
+  --color-earth-700: #6b4220;
+  --color-earth-800: #4a2d14;
+  --color-earth-900: #2d1a0a;
+
+  /* Cream & Beige */
+  --color-cream: #fdfaf5;
+  --color-beige: #f5ede0;
+  --color-sand: #e8dcc8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
