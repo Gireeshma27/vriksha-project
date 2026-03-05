@@ -90,8 +90,8 @@ export default function RecipesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {recipes.map((recipe, i) => (
+              <Link key={recipe.id} href={`/recipes/${recipe.id}`} className="block">
               <motion.div
-                key={recipe.id}
                 className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-forest-900/10 border border-green-100/60 transition-shadow duration-500 cursor-pointer"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -159,6 +159,7 @@ export default function RecipesPage() {
                   </div>
                 </div>
               </motion.div>
+              </Link>
             ))}
           </div>
         </div>

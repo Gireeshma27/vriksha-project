@@ -110,7 +110,7 @@ export default function RecipesSection() {
                 className="inline-flex"
               >
                 <Link
-                  href="/recipes"
+                  href={`/recipes/${featured.id}`}
                   className="inline-flex items-center gap-2 bg-white text-forest-700 font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-earth-50 transition-colors shadow-md"
                 >
                   View Recipe
@@ -176,7 +176,7 @@ export default function RecipesSection() {
 
                 {/* Arrow */}
                 <Link
-                  href="/recipes"
+                  href={`/recipes/${recipe.id}`}
                   aria-label={`View recipe: ${recipe.name}`}
                   className="shrink-0 w-8 h-8 rounded-full bg-forest-50 flex items-center justify-center text-forest-500 group-hover:bg-forest-600 group-hover:text-white transition-all duration-300"
                 >
